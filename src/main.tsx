@@ -1,3 +1,4 @@
+import { getBlockUidFromTarget } from 'roamjs-components/dom'
 const { React, ReactDOM, Blueprint } = window;
 const roam_main_el = document.querySelector(".roam-main");
 const roam_body_main_el = document.querySelector(".roam-body-main");
@@ -33,6 +34,7 @@ let initial = (extensionAPI: any) => {
         if (!e.ctrlKey) {
           return false;
         }
+        const s = getBlockUidFromTarget(e.target as any)
         if (!isClickOnPageRef(e.target)) {
           return false;
         }

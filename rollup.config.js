@@ -2,6 +2,7 @@ import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import pkg from "./package.json";
 import typescript from "@rollup/plugin-typescript";
+import json from '@rollup/plugin-json'
 
 
 const externals = {
@@ -13,13 +14,15 @@ const externals = {
 export default [
   // browser-friendly UMD build
   {
-    externals,
+    external: [ 'react', 'react-dom', '@blueprintjs' ],
     input: "src/main.tsx",
     output: [{ file: pkg.browser, format: "esm" }],
     plugins: [
       resolve(), // so Rollup can find `ms`
-      commonjs(), // so Rollup can convert `ms` to an ES module
+      // commonjs(), // so Rollup can convert `ms` to an ES module
+      commonjs({transformMixedEsModules:true}),
       typescript({ tsconfig: "./tsconfig.json" }),
+      json()
     ],
   },
 
