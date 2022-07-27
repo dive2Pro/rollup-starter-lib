@@ -1,6 +1,6 @@
 {
-  "name": "rollup-starter-lib",
-  "version": "1.0.0",
+  "name": "roam-tabs",
+  "version": "0.0.1",
   "browser": "dist/extension.js",
   "dependencies": {
     "@blueprintjs/core": "^4.6.1",
