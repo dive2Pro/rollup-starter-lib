@@ -10,27 +10,26 @@ console.log = (...args) => {
   log(...args);
 };
 
-function isClickOnPageRef(el: HTMLElement) {
+function isClickOnPageRef(el: EventTarget) {
   // return el.className.includes('rm-page-ref rm-page-ref--link')
   return $(el).find(".rm-page-ref.rm-page-ref--link").get();
 }
 
-function findPageuid(el: HTMLElement) {
+function findPageuid(el: EventTarget) {
   return $(el).parent().attr("data-link-uid");
 }
 
-let initial = (extensionAPI) => {
+let initial = (extensionAPI: any) => {
   log("roam-tabs initialing");
   log(roam_main_el, React);
   const el = document.createElement("nav");
   roam_main_el?.insertBefore(el, roam_body_main_el);
 
   function App() {
-    log("hello");
     const [uids, setUids] = useState<string[]>([]);
 
     useEffect(() => {
-      const onPointerdown = (e) => {
+      const onPointerdown = (e: PointerEvent) => {
         if (!e.ctrlKey) {
           return false;
         }
@@ -41,8 +40,6 @@ let initial = (extensionAPI) => {
         if (!uid) {
           return false;
         }
-        // e.preventDefault();
-        log(uid, " yes it is me ");
         setUids((prevUids) => {
           const index = prevUids.findIndex((id) => id === uid);
           if (index === -1) {
@@ -60,19 +57,12 @@ let initial = (extensionAPI) => {
     const handleNavbarTabChange = (id: string) => {
       setNavbarTabId(id);
     };
-    return React.createElement(
-      "div",
-      {},
-      React.createElement(
-        Tabs,
-        {
-          onChange: handleNavbarTabChange,
-          selectedTabId: navbarTabId,
-        },
-        uids.map((uid) => {
-          return React.createElement(Tab, { title: "one", key: uid, id: uid });
-        })
-      )
+    return (
+      <Tabs onChange={handleNavbarTabChange} selectedTabId={navbarTabId}>
+        {uids.map((uid) => {
+          return <Tab title="one" key={uid} id={uid} />;
+        })}
+      </Tabs>
     );
   }
 
@@ -83,7 +73,7 @@ let initial = (extensionAPI) => {
   };
 };
 let initialed: Function;
-function onload({ extensionAPI }) {
+function onload({ extensionAPI }: any) {
   initialed = initial(extensionAPI);
 }
 
